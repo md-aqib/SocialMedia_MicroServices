@@ -1,19 +1,65 @@
 const { Types } = require('mongoose')
 const userModel = require('../models/user');
+const JWT_SECRET = 'mysecretkey';
 
 
 const registerUser = async (req, res) => {
-    const { name, email } = req.body;
-    const user = new userModel({ name, email });
-    await user.save();
-    res.status(201).send(user);
+    try {
+        const { name, email, password, mobile, dob } = req.body;
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const obj = {
+            name,
+            email,
+            password: hashedPassword,
+            passwordText: password,
+            mobile,
+            dob
+        }
+        const user = await new userModel(obj).save();
+        return res.json({
+            meta: { msg: "User registered successfully", status: true },
+            data: user
+        });
+    } catch(e) {
+        return res.json({
+            meta: { msg: e.message, status: false }
+        })
+    }
 }
 
-const userProfile = async (req, res) => {
-    const posts = await userModel.findOne({});
-    res.status(200).send(posts);
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await userModel.findOne({ email });
+        if (!user) {
+          throw new Error('Invalid email or password');
+        };
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            throw new Error('Invalid email or password');
+        };
+        let jwtObj = {
+            userId: user.userId,
+            email: user.email,
+            mobile: user.mobile
+        };
+        const token = jwt.sign(jwtObj, JWT_SECRET, { expiresIn: '1h' });
+        return res.json({
+            meta: { msg: "User registered successfully", status: true },
+            data: user,
+            token
+        });
+    } catch(e) {
+        return res.json({
+            meta: { msg: e.message, status: false }
+        })
+    }
 }
 
 module.exports = {
-    registerUser
+    registerUser,
+    login
 };
