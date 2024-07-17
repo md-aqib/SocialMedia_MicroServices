@@ -11,7 +11,7 @@ const addPost = async (req, res) => {
 
 const postList = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await postModel.find();
 
     // Fetch user details for each post author
     const userServiceUrl = 'http://user-service:3000/users/';

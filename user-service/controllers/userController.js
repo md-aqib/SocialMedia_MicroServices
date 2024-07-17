@@ -59,7 +59,28 @@ const login = async (req, res) => {
     }
 }
 
+const getProfile = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const getDetails = await userModel.findOne({ userId });
+        if(!getDetails) {
+            return res.json({
+                meta: { msg: "Data not found", status: false }
+            });
+        };
+        return res.json({
+            meta: { msg: "Data found successfully", status: true },
+            data: getDetails
+        });
+    } catch(e) {
+        return res.json({
+            meta: { msg: e.message, status: false }
+        })
+    }
+}
+
 module.exports = {
     registerUser,
-    login
+    login,
+    getProfile
 };
