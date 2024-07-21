@@ -28,6 +28,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 // });
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017/users';
+console.log(mongoUrl)
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected for User Service'))
   .catch(err => console.error('MongoDB connection error:', err));

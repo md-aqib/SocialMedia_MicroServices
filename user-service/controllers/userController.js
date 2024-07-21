@@ -1,12 +1,18 @@
 const { Types } = require('mongoose')
 const userModel = require('../models/user');
+const bcrypt = require('bcryptjs');
 const JWT_SECRET = 'mysecretkey';
 
 
 const registerUser = async (req, res) => {
     try {
         const { name, email, password, mobile, dob } = req.body;
-
+        const findUser = await userModel.findOne({ email });
+        if(findUser) {
+            return res.json({
+                meta: { msg: "User already exists", status: false }
+            })
+        }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const obj = {
@@ -19,7 +25,7 @@ const registerUser = async (req, res) => {
         }
         const user = await new userModel(obj).save();
         return res.json({
-            meta: { msg: "User registered successfully", status: true },
+            meta: { msg: "User registered successfully...", status: true },
             data: user
         });
     } catch(e) {
@@ -48,7 +54,7 @@ const login = async (req, res) => {
         };
         const token = jwt.sign(jwtObj, JWT_SECRET, { expiresIn: '1h' });
         return res.json({
-            meta: { msg: "User registered successfully", status: true },
+            meta: { msg: "User loggedIn successfully.", status: true },
             data: user,
             token
         });
