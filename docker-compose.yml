@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/Learnings/micro-services-proj/user-service
+      - .:/home/app/user-service/
     environment:
       - MONGO_URL=mongodb://mongo_db:27017/users
     depends_on:
@@ -16,7 +16,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - .:/Learnings/micro-services-proj/post-service
+      - .:/home/app/post-service/
     environment:
       - MONGO_URL=mongodb://mongo_db:27017/posts
     depends_on:
