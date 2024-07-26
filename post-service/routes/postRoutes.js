@@ -6,7 +6,7 @@ const {
     postList
 } = require('../controllers/postController')
 
-router.post('/add', auth, addPost);
-router.get('/list', auth, postList);
+router.post('/add', addPost);
+router.get('/list', postList);
 
 module.exports = router;

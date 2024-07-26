@@ -67,7 +67,7 @@ const login = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        const { userId } = req.user;
+        const { userId } = req.query;
         const getDetails = await userModel.findOne({ userId });
         if(!getDetails) {
             return res.json({
