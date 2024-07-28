@@ -1,6 +1,7 @@
 const { Types } = require('mongoose')
 const userModel = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'mysecretkey';
 
 
@@ -10,7 +11,7 @@ const registerUser = async (req, res) => {
         const findUser = await userModel.findOne({ email });
         if(findUser) {
             return res.json({
-                meta: { msg: "User already exists", status: false }
+                meta: { msg: "User already exists..", status: false }
             })
         }
         const salt = await bcrypt.genSalt(10);
