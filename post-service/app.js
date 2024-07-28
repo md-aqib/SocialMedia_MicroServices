@@ -35,9 +35,19 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(bodyParser.json());
 app.use('/posts', postRoutes);
 
+// Route not found (404) handler
+app.use((req, res, next) => {
+    res.status(404).json({ 
+        meta: { msg: 'Route not found', status: false }
+    });
+});
+  
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something broke!');
+    res.status(500).json({ 
+        meta: { msg: 'Internal Server Error', status: false }
+    });
 });
 
 app.listen(PORT, () => {
