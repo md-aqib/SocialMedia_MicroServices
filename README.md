@@ -1,0 +1,1 @@
+This repository contains a microservices project using Docker, Kubernetes, Redis, BullMQ (for message queues), Kafka, and Zookeeper, CI CD pipeline. The architecture is designed to be scalable, resilient, and easy to deploy across different environments.
