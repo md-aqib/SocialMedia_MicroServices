@@ -1,0 +1,46 @@
+version: '3.1'
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/app/user-service
+    environment:
+      - MONGO_URL=mongodb://mongo_db:27017/users
+      - REDIS_URL=redis://redis:6379
+      - ELASTICMAIL_API_KEY=21B8120C67DDB7C3DC234474EAEE19D52EF1B5E787AE4FBE037695C920C8AF7A07D96C91479F06A7A848C3A19E0D06A3
+    depends_on:
+      - mongo_db
+      - redis
+
+  post-service:
+    build: ./post-service
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/home/app/post-service
+    environment:
+      - MONGO_URL=mongodb://mongo_db:27017/posts
+      - REDIS_URL=redis://redis:6379
+      - ELASTICMAIL_API_KEY=21B8120C67DDB7C3DC234474EAEE19D52EF1B5E787AE4FBE037695C920C8AF7A07D96C91479F06A7A848C3A19E0D06A3
+    depends_on:
+      - mongo_db
+      - redis
+
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    ports:
+      - "2717:27017"
+    volumes:
+      - mongo_db:/data/db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    container_name: redis_container
+
+volumes:
+  mongo_db: {}
