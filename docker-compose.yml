@@ -10,6 +10,8 @@ services:
       - MONGO_URL=mongodb://mongo_db:27017/users
       - REDIS_URL=redis://redis:6379
       - ELASTICMAIL_API_KEY=21B8120C67DDB7C3DC234474EAEE19D52EF1B5E787AE4FBE037695C920C8AF7A07D96C91479F06A7A848C3A19E0D06A3
+      - AWS_AKID=
+      - AWS_SAK=
     depends_on:
       - mongo_db
       - redis

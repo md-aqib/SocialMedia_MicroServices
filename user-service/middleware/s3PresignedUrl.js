@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({
   region: 'ap-south-1',
-  accessKeyId: '',
-  secretAccessKey: ''
+  accessKeyId: process.env.AWS_AKID,
+  secretAccessKey: process.env.AWS_SAK
 });
 
 const generatePresignedGetUrl = (key) => {
